@@ -36,9 +36,20 @@ router.get('/users/:id', (req, res) => {
   }
 });
 
-router.post('/users', (req, res) => {
-  console.log('post');
-  res.send('Got a POST request');
+router.post('/users', async (req, res) => {
+  try {
+    const db = connection.db('db_latihan');
+    const { name, age, status } = req.body;
+    const users = await db.collection('users').insertOne({
+      name,
+      age,
+      status,
+    });
+
+    res.send({ data: users, message: 'Berhasil ditambahkan' });
+  } catch (err) {
+    res.send({ message: err.message || 'internal server error' });
+  }
 });
 
 router.put('/users', (req, res) => {
