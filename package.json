@@ -20,6 +20,7 @@
   "homepage": "https://github.com/moehzi/express-mongo-setup#readme",
   "dependencies": {
     "express": "^4.17.3",
-    "mongodb": "^4.4.1"
+    "mongodb": "^4.4.1",
+    "mongoose": "^6.2.7"
   }
 }
