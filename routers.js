@@ -1,4 +1,5 @@
 const express = require('express');
+const { ObjectId } = require('mongodb');
 const router = express.Router();
 const connection = require('./connection.js');
 
@@ -52,8 +53,22 @@ router.post('/users', async (req, res) => {
   }
 });
 
-router.put('/users', (req, res) => {
-  res.send('Got a PUT request at /user');
+router.put('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const db = connection.db('db_latihan');
+    const { name, age, status } = req.body;
+    const users = await db
+      .collection('users')
+      .updateOne({ _id: ObjectId(id) }, { $set: { name, age, status } });
+
+    if (users.modifiedCount === 1) {
+      return res.send({ data: users, message: 'berhasil diubah' });
+    }
+    return res.send({ message: 'gagal' });
+  } catch (err) {
+    res.send({ message: err.message || 'internal server error' });
+  }
 });
 
 router.delete('/users', (req, res) => {
