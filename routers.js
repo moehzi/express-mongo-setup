@@ -71,8 +71,19 @@ router.put('/users/:id', async (req, res) => {
   }
 });
 
-router.delete('/users', (req, res) => {
-  res.send('Got a Delete request at /user');
+router.delete('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const db = connection.db('db_latihan');
+    const users = await db.collection('users').deleteOne({ _id: ObjectId(id) });
+
+    if (users.deletedCount === 1) {
+      return res.send({ message: 'berhasil delete' });
+    }
+    return res.send({ message: 'gagal hapus' });
+  } catch (err) {
+    res.send({ message: err.message || 'internal server error' });
+  }
 });
 
 module.exports = router;
