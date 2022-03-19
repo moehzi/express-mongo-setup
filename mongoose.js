@@ -60,4 +60,7 @@ db.once('open', async () => {
   const update = await updateUser1.save();
 
   console.log(update);
+
+  const deleteUser = await User.deleteOne({ _id: '62357b8ae856773ebc9f662f' });
+  console.log(deleteUser);
 });
