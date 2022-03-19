@@ -23,12 +23,14 @@ const User = mongoose.model('User', userSchema);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', async () => {
-  //    Get all users
+  //  Get all users
   const users = await User.find();
   console.log('get all: ', users);
+
   //   Get one user
   const findOneUser = await User.findOne({ _id: '6231a5de95b7795ddb2dc5c2' });
   console.log('get one: ', findOneUser);
+
   // create user
   const newUser = await User.create({
     name: 'Muh Nur Faizi',
@@ -36,6 +38,7 @@ db.once('open', async () => {
     status: 'active',
   });
   console.log(newUser);
+
   // U can also create user with this save method
   const newUser1 = new User();
   newUser1.name = 'faizigagahbanget';
@@ -50,4 +53,11 @@ db.once('open', async () => {
     { name: 'Muh Faizi' }
   );
   console.log(updateUser);
+
+  // Use method save to update
+  const updateUser1 = await User.findById('62357b8ae856773ebc9f662f');
+  updateUser1.name = 'Mawar Agung';
+  const update = await updateUser1.save();
+
+  console.log(update);
 });
