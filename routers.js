@@ -37,14 +37,18 @@ router.get('/users/:id', async (req, res) => {
 });
 
 router.post('/users', async (req, res) => {
-  const { name, age, status } = req.body;
-  const user = await User.create({
-    name,
-    age,
-    status,
-  });
+  try {
+    const { name, age, status } = req.body;
+    const user = await User.create({
+      name,
+      age,
+      status,
+    });
 
-  res.send({ data: user, message: 'Berhasil' });
+    res.send({ data: user, message: 'Berhasil' });
+  } catch (err) {
+    res.send({ message: err.message || 'Internal Server Errror' });
+  }
 });
 
 module.exports = router;
