@@ -1,8 +1,6 @@
 const express = require('express');
-const { ObjectId } = require('mongodb');
 const router = express.Router();
-const connection = require('./connection.js');
-
+const mongoose = require('mongoose');
 require('./mongoose');
 
 const User = require('./User');
@@ -16,6 +14,23 @@ router.get('/users', async (req, res) => {
     const users = await User.find();
 
     res.send({ data: users });
+  } catch (err) {
+    res.send({ message: err.message || 'Internal Server Errror' });
+  }
+});
+
+router.get('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.isValidObjectId(id))
+      return res.send({ message: 'User tidak ditemukan' });
+
+    const user = await User.findOne({ _id: id });
+
+    if (user) {
+      res.send({ message: 'Berhasil', data: user });
+    }
   } catch (err) {
     res.send({ message: err.message || 'Internal Server Errror' });
   }
