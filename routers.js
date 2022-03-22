@@ -51,4 +51,28 @@ router.post('/users', async (req, res) => {
   }
 });
 
+router.put('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, age, status } = req.body;
+    const user = await User.updateOne(
+      { _id: id },
+      {
+        name,
+        age,
+        status,
+      },
+      { runValidators: true }
+    );
+
+    if (user) {
+      res.send({ data: user, message: 'Berhasil' });
+    } else {
+      res.send({ message: 'User tidak ditemukan' });
+    }
+  } catch (err) {
+    res.send({ message: err.message || 'Internal Server Errror' });
+  }
+});
+
 module.exports = router;
