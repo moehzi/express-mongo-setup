@@ -75,4 +75,19 @@ router.put('/users/:id', async (req, res) => {
   }
 });
 
+router.delete('/users/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.deleteOne({ _id: id });
+
+    if (user) {
+      res.send({ data: user, message: 'Berhasil' });
+    } else {
+      res.send({ message: 'User tidak ditemukan' });
+    }
+  } catch (err) {
+    res.send({ message: err.message || 'Internal Server Errror' });
+  }
+});
+
 module.exports = router;
